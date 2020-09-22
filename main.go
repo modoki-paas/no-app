@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"net/http"
 )
 
@@ -20,7 +21,12 @@ const message = `<!DOCTYPE html>
 `
 
 func main() {
-	http.ListenAndServe(":80", http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
+	port := os.Getenv("PORT")
+	if len(port) == 0 {
+		port = "80"
+	}
+	
+	http.ListenAndServe(":" + port, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		rw.Write([]byte(message))
 	}))
 }
